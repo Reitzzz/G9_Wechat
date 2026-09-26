@@ -1,13 +1,12 @@
 import sys
 import re
 
-from config import MARKDOWN_DIR
+from config import MARKDOWN_DIR, HTML_DIR
 
 if sys.stdout and hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-md_dir = MARKDOWN_DIR
-files = sorted(list(md_dir.glob("*.md")))
+files = sorted(list(MARKDOWN_DIR.glob("*.md"))) + sorted(list(HTML_DIR.glob("*.html")))
 
 total_tags = 0
 found = 0
@@ -20,14 +19,14 @@ for f in files:
     html_imgs = re.findall(r'<img[^>]+src=["\'](.*?)["\']', text)
     all_imgs = md_imgs + html_imgs
     total_tags += len(all_imgs)
-    
+
     for img in all_imgs:
         img_clean = img.split("?")[0].split("#")[0].strip()
         if img_clean.startswith("http"):
             missing += 1
             broken_list.append((f.name, img, "HTTP link"))
         elif img_clean.startswith("../"):
-            # relative to markdown dir
+            # relative to the file's own dir (markdown/ 或 html/)
             target = (f.parent / img_clean).resolve()
             if target.exists():
                 found += 1
