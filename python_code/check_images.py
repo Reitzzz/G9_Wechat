@@ -16,7 +16,7 @@ broken_list = []
 for f in files:
     text = f.read_text(encoding="utf-8")
     md_imgs = re.findall(r'!\[.*?\]\((.*?)\)', text)
-    html_imgs = re.findall(r'<img[^>]+src=["\'](.*?)["\']', text)
+    html_imgs = re.findall(r'<img[^>]+(?<![-\w])src=["\'](.*?)["\']', text)
     all_imgs = md_imgs + html_imgs
     total_tags += len(all_imgs)
 
