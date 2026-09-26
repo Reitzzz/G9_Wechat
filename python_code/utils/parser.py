@@ -170,26 +170,18 @@ def parse_and_convert_article(
     # 清理多余空行
     markdown_body = re.sub(r'\n{3,}', '\n\n', markdown_body).strip()
     
-    # 7. 构建标准 YAML Front-Matter
-    front_matter = [
-        "---",
-        f"title: \"{title}\"",
-        f"author: \"{author}\"",
-        f"date: \"{publish_time}\"",
-        f"original_url: \"{article_info.get('link', '')}\"",
-        f"digest: \"{article_info.get('digest', '')}\"",
-        "---",
-        "",
+    # 7. 构建标准头部（论坛转载格式：标题 + 授权声明块，不再写 frontmatter）
+    header = [
         f"# {title}",
         "",
-        f"> **作者**：{author}  ",
-        f"> **发布时间**：{publish_time}  ",
-        f"> **原文链接**：[{title}]({article_info.get('link', '')})",
+        f"> 本文转载自微信公众号 **{author}**，已获作者授权。  ",
+        f"> 原文发布于 {publish_time}  ",
+        f"> 原文链接：[mp.weixin.qq.com]({article_info.get('link', '')})",
         "",
         "---",
         "",
         markdown_body
     ]
-    
-    full_markdown = "\n".join(front_matter)
+
+    full_markdown = "\n".join(header)
     return full_markdown, raw_content_html, title
