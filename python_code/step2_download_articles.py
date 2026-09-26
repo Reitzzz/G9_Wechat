@@ -66,6 +66,10 @@ def download_all_articles():
         link = item.get("link", "")
         title = item.get("title", "未命名")
         pub_date = item.get("publish_date", "").split(" ")[0] or "unknown_date"
+        m_date = re.match(r"(\d{4})年(\d{1,2})月(\d{1,2})日?", pub_date)
+        if m_date:
+            pub_date = (f"{m_date.group(1)}年{int(m_date.group(2)):02d}"
+                        f"月{int(m_date.group(3)):02d}日")
         idx = item.get("index", 0)
 
         if not link:
