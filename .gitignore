@@ -1,0 +1,8 @@
+# 凭证与登录态，禁止入库
+.env
+data/browser_profile/
+
+# 工具本地状态
+.zcode/
+__pycache__/
+*.pyc
